@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type CacheItem struct {
+type Item struct {
 	sync.RWMutex
 	key        interface{}
 	data       interface{}
@@ -14,9 +14,9 @@ type CacheItem struct {
 	aliveTime  time.Duration
 }
 
-func NewCacheItem(key, data interface{}, aliveTime time.Duration) *CacheItem {
+func NewCacheItem(key, data interface{}, aliveTime time.Duration) *Item {
 	t := time.Now()
-	return &CacheItem{
+	return &Item{
 		key:        key,
 		data:       data,
 		createdOn:  t,
@@ -25,13 +25,13 @@ func NewCacheItem(key, data interface{}, aliveTime time.Duration) *CacheItem {
 	}
 }
 
-func (item *CacheItem) KeepAlive() {
+func (item *Item) KeepAlive() {
 	item.Lock()
 	defer item.Unlock()
 	item.accessedOn = time.Now()
 }
 
-func (item *CacheItem) updateData(data interface{}) {
+func (item *Item) updateData(data interface{}) {
 	item.Lock()
 	defer item.Unlock()
 	item.data = data
@@ -40,21 +40,21 @@ func (item *CacheItem) updateData(data interface{}) {
 	item.createdOn = t
 }
 
-func (item *CacheItem) AccessedOn() time.Time {
+func (item *Item) AccessedOn() time.Time {
 	item.RLock()
 	defer item.RUnlock()
 	return item.accessedOn
 }
 
-func (item *CacheItem) CreatedOn() time.Time {
+func (item *Item) CreatedOn() time.Time {
 	return item.createdOn
 }
 
-func (item *CacheItem) Key() interface{} {
+func (item *Item) Key() interface{} {
 	return item.key
 }
 
-func (item *CacheItem) Data() interface{} {
+func (item *Item) Data() interface{} {
 	item.RLock()
 	defer item.RUnlock()
 	item.accessedOn = time.Now()
