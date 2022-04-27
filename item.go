@@ -3,6 +3,8 @@ package cache
 import (
 	"sync"
 	"time"
+
+	"github.com/mohae/deepcopy"
 )
 
 type Item struct {
@@ -47,10 +49,14 @@ func (item *Item) AccessedOn() time.Time {
 }
 
 func (item *Item) CreatedOn() time.Time {
+	item.RLock()
+	defer item.RUnlock()
 	return item.createdOn
 }
 
 func (item *Item) Key() interface{} {
+	item.RLock()
+	defer item.RUnlock()
 	return item.key
 }
 
@@ -58,5 +64,5 @@ func (item *Item) Data() interface{} {
 	item.RLock()
 	defer item.RUnlock()
 	item.accessedOn = time.Now()
-	return item.data
+	return deepcopy.Copy(item.data)
 }
