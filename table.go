@@ -40,7 +40,7 @@ func (t *Table) Add(key interface{}, value interface{}) (bool, error) {
 	t.Lock()
 	defer t.Unlock()
 	if _, has := t.row[key]; has {
-		return false, KeyExisted
+		return false, KeyExistedErr
 	}
 	t.row[key] = NewCacheItem(key, value, DefaultAliveTime)
 	t.count++
@@ -56,7 +56,7 @@ func (t *Table) Update(key interface{}, value interface{}) error {
 	defer t.Unlock()
 	old, has := t.row[key]
 	if !has {
-		return KeyNotFound
+		return KeyNotFoundErr
 	}
 	old.updateData(value)
 	if t.callbackObj.UpdateFn != nil {
@@ -113,7 +113,7 @@ func (t *Table) Get(key interface{}) (interface{}, error) {
 	defer t.RUnlock()
 	value, has := t.row[key]
 	if !has {
-		return nil, KeyNotFound
+		return nil, KeyNotFoundErr
 	}
 	return value.Data(), nil
 }
@@ -124,7 +124,7 @@ func (t *Table) GetAndDelete(key interface{}) (interface{}, error) {
 	defer t.Unlock()
 	value, has := t.row[key]
 	if !has {
-		return nil, KeyNotFound
+		return nil, KeyNotFoundErr
 	} else {
 		delete(t.row, key)
 		return value.Data(), nil

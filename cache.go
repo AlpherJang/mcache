@@ -17,6 +17,9 @@ var (
 	mutex          sync.RWMutex
 )
 
+type CheckFunc func(key interface{}) bool
+type UpdateCheckFunc func(value interface{}) bool
+
 func Cache(table string) *Table {
 	mutex.RLock()
 	t, ok := cache[table]
