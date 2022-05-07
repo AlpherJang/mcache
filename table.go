@@ -52,8 +52,8 @@ func (t *Table) Add(key interface{}, value interface{}) (bool, error) {
 
 // Update 更新table中的CacheItem
 func (t *Table) Update(key interface{}, value interface{}) error {
-	t.Lock()
-	defer t.Unlock()
+	t.RLock()
+	defer t.RUnlock()
 	old, has := t.row[key]
 	if !has {
 		return KeyNotFoundErr
@@ -169,7 +169,7 @@ func (t *Table) checkExpire() {
 			continue
 		}
 		if now.Sub(accessedOn) >= aliveTime {
-			t.Delete(key)
+			delete(t.row, key)
 		}
 	}
 	t.cleanupTimer = time.AfterFunc(DefaultAliveTime, t.checkExpire)
