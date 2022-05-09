@@ -11,10 +11,11 @@ const (
 )
 
 var (
-	KeyNotFoundErr = errors.New("key not found")
-	KeyExistedErr  = errors.New("exists same key")
-	cache          = make(map[string]*Table)
-	mutex          sync.RWMutex
+	KeyNotFoundErr         = errors.New("key not exist")
+	KeyExistedErr          = errors.New("key already exist")
+	UpdateCheckRejectedErr = errors.New("update check rejected")
+	cache                  = make(map[string]*Table)
+	mutex                  sync.RWMutex
 )
 
 type CheckFunc func(key interface{}) bool

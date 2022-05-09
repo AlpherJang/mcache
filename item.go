@@ -1,10 +1,9 @@
 package cache
 
 import (
+	"github.com/mohae/deepcopy"
 	"sync"
 	"time"
-
-	"github.com/mohae/deepcopy"
 )
 
 type Item struct {

@@ -51,13 +51,23 @@ func (t *Table) Add(key interface{}, value interface{}) (bool, error) {
 }
 
 // Update 更新table中的CacheItem
-func (t *Table) Update(key interface{}, value interface{}) error {
+func (t *Table) Update(key interface{}, value interface{}, checkFunc ...UpdateCheckFunc) error {
+	// 这里加读锁即可，可以让不同key的update并发操作
+	// 对于相同的key，其item的updateData方法会加写锁，也不会产生并发问题
 	t.RLock()
 	defer t.RUnlock()
-	old, has := t.row[key]
+	old, has := t.get(key)
 	if !has {
 		return KeyNotFoundErr
 	}
+
+	for _, fn := range checkFunc {
+		if !fn(old.Data()) {
+			return UpdateCheckRejectedErr
+		}
+	}
+
+	// item的更新操作内部已加写锁
 	old.updateData(value)
 	if t.callbackObj.UpdateFn != nil {
 		t.callbackObj.UpdateFn(key, old.Data(), value)
@@ -69,7 +79,7 @@ func (t *Table) Update(key interface{}, value interface{}) error {
 func (t *Table) UpdateForce(key interface{}, value interface{}) bool {
 	t.Lock()
 	defer t.Unlock()
-	if old, has := t.row[key]; has {
+	if old, has := t.get(key); has {
 		old.updateData(value)
 		if t.callbackObj.UpdateFn != nil {
 			t.callbackObj.UpdateFn(key, old.Data(), value)
@@ -84,25 +94,30 @@ func (t *Table) UpdateForce(key interface{}, value interface{}) bool {
 	return true
 }
 
-// Delete 删除table中的CacheItem，若CacheItem不存在则直接return true
+// Delete 删除table中的CacheItem，若CacheItem不存在则直接return false
 func (t *Table) Delete(key interface{}) bool {
 	t.Lock()
 	defer t.Unlock()
 	item, has := t.row[key]
 	if !has {
-		return true
+		return false
 	}
+	t.delete(key, item)
+	return true
+}
+
+func (t *Table) delete(key interface{}, item *Item) {
 	delete(t.row, key)
+	t.count--
 	if t.callbackObj.RemoveFn != nil {
 		t.callbackObj.RemoveFn(key, item.Data())
 	}
-	return true
 }
 
 // Exists 判断key是否存在于map中
 func (t *Table) Exists(key interface{}) bool {
-	t.Lock()
-	defer t.Unlock()
+	t.RLock()
+	defer t.RUnlock()
 	_, has := t.row[key]
 	return has
 }
@@ -111,11 +126,16 @@ func (t *Table) Exists(key interface{}) bool {
 func (t *Table) Get(key interface{}) (interface{}, error) {
 	t.RLock()
 	defer t.RUnlock()
-	value, has := t.row[key]
-	if !has {
+	if value, has := t.get(key); !has {
 		return nil, KeyNotFoundErr
+	} else {
+		return value.Data(), nil
 	}
-	return value.Data(), nil
+}
+
+func (t *Table) get(key interface{}) (*Item, bool) {
+	value, has := t.row[key]
+	return value, has
 }
 
 // GetAndDelete 取出key对应的value的同时，从缓存中删除
@@ -126,7 +146,7 @@ func (t *Table) GetAndDelete(key interface{}) (interface{}, error) {
 	if !has {
 		return nil, KeyNotFoundErr
 	} else {
-		delete(t.row, key)
+		t.delete(key, value)
 		return value.Data(), nil
 	}
 }
@@ -169,7 +189,8 @@ func (t *Table) checkExpire() {
 			continue
 		}
 		if now.Sub(accessedOn) >= aliveTime {
-			delete(t.row, key)
+			// 这里的删除无需再加锁了
+			t.delete(key, item)
 		}
 	}
 	t.cleanupTimer = time.AfterFunc(DefaultAliveTime, t.checkExpire)
