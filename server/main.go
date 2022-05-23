@@ -4,4 +4,5 @@ package main
 func main() {
 	// @todo init base config
 	// @todo init server config
+	// @todo shutdown server with notify
 }
