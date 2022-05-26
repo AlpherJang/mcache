@@ -21,7 +21,7 @@ var (
 type CheckFunc func(key interface{}) bool
 type UpdateCheckFunc func(value interface{}) bool
 
-func Cache(table string) *Table {
+func Cache(table string, liveTime time.Duration) *Table {
 	mutex.RLock()
 	t, ok := cache[table]
 	mutex.RUnlock()
@@ -33,7 +33,7 @@ func Cache(table string) *Table {
 				row:  make(map[interface{}]*Item),
 				name: table,
 			}
-			t.cleanupTimer = time.AfterFunc(DefaultAliveTime, t.checkExpire)
+			t.cleanupTimer = time.AfterFunc(liveTime, t.checkExpire)
 			cache[table] = t
 		}
 		mutex.Unlock()
