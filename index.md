@@ -14,7 +14,3 @@ mcache provide these rest api:
 - /delete : delete one data cache
 - /update : update one data cache in table
 - /register : register a cache in table
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
