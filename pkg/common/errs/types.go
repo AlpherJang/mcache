@@ -1,18 +1,30 @@
 package errs
 
-type InnerError struct {
+import "errors"
+
+type InnerError interface {
+	Code() int
+	String() string
+	Error() error
+}
+
+func NewInnerError(err string, code int) InnerError {
+	return &innerError{err: errors.New(err), code: code}
+}
+
+type innerError struct {
 	err  error
 	code int
 }
 
-func (e InnerError) Code() int {
+func (e innerError) Code() int {
 	return e.code
 }
 
-func (e InnerError) Error() error {
+func (e innerError) Error() error {
 	return e.err
 }
 
-func (e InnerError) String() string {
+func (e innerError) String() string {
 	return e.err.Error()
 }

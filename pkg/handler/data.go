@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/AlpherJang/mcache/cache"
+	"github.com/AlpherJang/mcache/pkg/cache"
 	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"github.com/AlpherJang/mcache/pkg/model"
 	"github.com/gin-gonic/gin"
@@ -37,6 +37,17 @@ func (d *DataStruct) register(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, nil)
 }
 
-func (d *DataStruct) delete() {
-
+func (d *DataStruct) delete(ctx *gin.Context) {
+	tableName := ctx.Param("table")
+	key := ctx.Param("key")
+	table, err := cache.GetTable(tableName)
+	if err != nil {
+		ctx.AbortWithError(errs.TableNotFoundErr.Code(), errs.TableNotFoundErr.Error())
+		return
+	}
+	if !table.Delete(key) {
+		ctx.AbortWithError(errs.CacheDeleteErr.Code(), errs.CacheDeleteErr.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, nil)
 }

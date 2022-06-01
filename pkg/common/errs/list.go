@@ -1,9 +1,7 @@
 package errs
 
-import (
-	"errors"
-)
-
 var (
-	ParamErr = InnerError{err: errors.New("param error"), code: 400}
+	ParamErr         = NewInnerError("param error", 400)
+	TableNotFoundErr = NewInnerError("table not found", 404)
+	CacheDeleteErr   = NewInnerError("cache delete failed", 400)
 )
