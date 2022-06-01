@@ -1,37 +1,20 @@
-## Welcome to GitHub Pages
+## mcache
 
-You can use the [editor on GitHub](https://github.com/AlpherJang/mcache/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+mcache is a simple cache in service memory,and also provide a cache simple cache service. Welcome to use mcache and contribute your code to mcache.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Design
 
-### Markdown
+mcache save cache data in memory , and every item has its expire time, it will be cleaned after expired.
+
+mcache provide these rest api:
+
+- /list : list data cache in table
+- /get : get one data cache in table
+- /add : put data in cache table
+- /delete : delete one data cache
+- /update : update one data cache in table
+- /register : register a cache in table
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
 For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/AlpherJang/mcache/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
