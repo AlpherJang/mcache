@@ -23,8 +23,22 @@ func (d *DataStruct) add() {
 
 }
 
-func (d *DataStruct) update() {
-
+func (d *DataStruct) update(ctx *gin.Context) {
+	var req model.UpdateCacheReq
+	if err := ctx.ShouldBindJSON(req); err != nil {
+		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
+		return
+	}
+	table, err := cache.GetTable(req.Name)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	if err = table.Update(req.Key, req.Value); err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, nil)
 }
 
 func (d *DataStruct) register(ctx *gin.Context) {

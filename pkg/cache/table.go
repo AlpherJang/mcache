@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"sync"
 	"time"
 )
@@ -51,19 +52,19 @@ func (t *Table) Add(key interface{}, value interface{}) (bool, error) {
 }
 
 // Update 更新table中的CacheItem
-func (t *Table) Update(key interface{}, value interface{}, checkFunc ...UpdateCheckFunc) error {
+func (t *Table) Update(key interface{}, value interface{}, checkFunc ...UpdateCheckFunc) errs.InnerError {
 	// 这里加读锁即可，可以让不同key的update并发操作
 	// 对于相同的key，其item的updateData方法会加写锁，也不会产生并发问题
 	t.RLock()
 	defer t.RUnlock()
 	old, has := t.get(key)
 	if !has {
-		return KeyNotFoundErr
+		return errs.CacheNotFoundErr
 	}
 
 	for _, fn := range checkFunc {
 		if !fn(old.Data()) {
-			return UpdateCheckRejectedErr
+			return errs.UpdateCacheErr
 		}
 	}
 
