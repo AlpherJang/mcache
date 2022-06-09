@@ -15,8 +15,20 @@ func (d *DataStruct) list() {
 
 }
 
-func (d *DataStruct) get() {
-
+func (d *DataStruct) get(ctx *gin.Context) {
+	tableName := ctx.Param("table")
+	key := ctx.Param("key")
+	table, err := cache.GetTable(tableName)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	cacheData, err := table.Get(key)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"data": cacheData})
 }
 
 func (d *DataStruct) add() {

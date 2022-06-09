@@ -124,11 +124,11 @@ func (t *Table) Exists(key interface{}) bool {
 }
 
 // Get 获取获取指定key的缓存数据
-func (t *Table) Get(key interface{}) (interface{}, error) {
+func (t *Table) Get(key interface{}) (interface{}, errs.InnerError) {
 	t.RLock()
 	defer t.RUnlock()
 	if value, has := t.get(key); !has {
-		return nil, KeyNotFoundErr
+		return nil, errs.CacheNotFoundErr
 	} else {
 		return value.Data(), nil
 	}
