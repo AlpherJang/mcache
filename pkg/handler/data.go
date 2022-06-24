@@ -11,7 +11,15 @@ import (
 type DataStruct struct {
 }
 
-func (d *DataStruct) list() {
+func (d *DataStruct) list(ctx *gin.Context) {
+    tableName:=ctx.Param("table")
+    table,err:=cache.GetTable(tableName)
+    if err!=nil{
+        ctx.AbortWithError(err.Code(),err.Error())
+        return
+    }
+	cacheData:=table.List()
+	ctx.JSON(http.StatusOK,gin.H{"data":cacheData})
 
 }
 
