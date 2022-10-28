@@ -12,14 +12,14 @@ type DataStruct struct {
 }
 
 func (d *DataStruct) list(ctx *gin.Context) {
-    tableName:=ctx.Param("table")
-    table,err:=cache.GetTable(tableName)
-    if err!=nil{
-        ctx.AbortWithError(err.Code(),err.Error())
-        return
-    }
-	cacheData:=table.List()
-	ctx.JSON(http.StatusOK,gin.H{"data":cacheData})
+	tableName := ctx.Param("table")
+	table, err := cache.GetTable(tableName)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.GetError())
+		return
+	}
+	cacheData := table.List()
+	ctx.JSON(http.StatusOK, gin.H{"data": cacheData})
 
 }
 
@@ -28,12 +28,12 @@ func (d *DataStruct) get(ctx *gin.Context) {
 	key := ctx.Param("key")
 	table, err := cache.GetTable(tableName)
 	if err != nil {
-		ctx.AbortWithError(err.Code(), err.Error())
+		ctx.AbortWithError(err.Code(), err.GetError())
 		return
 	}
 	cacheData, err := table.Get(key)
 	if err != nil {
-		ctx.AbortWithError(err.Code(), err.Error())
+		ctx.AbortWithError(err.Code(), err.GetError())
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"data": cacheData})
@@ -46,16 +46,16 @@ func (d *DataStruct) add() {
 func (d *DataStruct) update(ctx *gin.Context) {
 	var req model.UpdateCacheReq
 	if err := ctx.ShouldBindJSON(req); err != nil {
-		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
+		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.GetError())
 		return
 	}
 	table, err := cache.GetTable(req.Name)
 	if err != nil {
-		ctx.AbortWithError(err.Code(), err.Error())
+		ctx.AbortWithError(err.Code(), err.GetError())
 		return
 	}
 	if err = table.Update(req.Key, req.Value); err != nil {
-		ctx.AbortWithError(err.Code(), err.Error())
+		ctx.AbortWithError(err.Code(), err.GetError())
 		return
 	}
 	ctx.JSON(http.StatusOK, nil)
@@ -64,10 +64,10 @@ func (d *DataStruct) update(ctx *gin.Context) {
 func (d *DataStruct) register(ctx *gin.Context) {
 	var req model.CreateTableReq
 	if err := ctx.ShouldBindJSON(req); err != nil {
-		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
+		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.GetError())
 		return
 	}
-	_ = cache.Cache(req.Name, req.ExpireTime)
+	_ = cache.NewByOption(req.Name, cache.WithAliveTime(req.ExpireTime))
 	ctx.JSON(http.StatusOK, nil)
 }
 
@@ -76,11 +76,11 @@ func (d *DataStruct) delete(ctx *gin.Context) {
 	key := ctx.Param("key")
 	table, err := cache.GetTable(tableName)
 	if err != nil {
-		ctx.AbortWithError(errs.TableNotFoundErr.Code(), errs.TableNotFoundErr.Error())
+		ctx.AbortWithError(err.Code(), err.GetError())
 		return
 	}
 	if !table.Delete(key) {
-		ctx.AbortWithError(errs.CacheDeleteErr.Code(), errs.CacheDeleteErr.Error())
+		ctx.AbortWithError(errs.CacheDeleteErr.Code(), errs.CacheDeleteErr.GetError())
 		return
 	}
 	ctx.JSON(http.StatusOK, nil)

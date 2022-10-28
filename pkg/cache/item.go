@@ -1,7 +1,10 @@
 package cache
 
 import (
+	"bytes"
+	"encoding/json"
 	"github.com/mohae/deepcopy"
+	"reflect"
 	"sync"
 	"time"
 )
@@ -32,13 +35,15 @@ func (item *Item) KeepAlive() {
 	item.accessedOn = time.Now()
 }
 
-func (item *Item) updateData(data interface{}) {
+func (item *Item) updateData(data interface{}) bool {
 	item.Lock()
 	defer item.Unlock()
+	changed := !item.equal(data)
 	item.data = data
 	t := time.Now()
 	item.accessedOn = t
 	item.createdOn = t
+	return changed
 }
 
 func (item *Item) AccessedOn() time.Time {
@@ -64,4 +69,19 @@ func (item *Item) Data() interface{} {
 	defer item.RUnlock()
 	item.accessedOn = time.Now()
 	return deepcopy.Copy(item.data)
+}
+
+func (item *Item) KvOnly() (interface{}, interface{}) {
+	item.RLock()
+	defer item.RUnlock()
+	return deepcopy.Copy(item.key), deepcopy.Copy(item.data)
+}
+
+func (item *Item) equal(data interface{}) bool {
+	b1, err1 := json.Marshal(data)
+	b2, err2 := json.Marshal(item.data)
+	if err1 == nil && err2 == nil {
+		return bytes.Equal(b1, b2)
+	}
+	return reflect.DeepEqual(data, item.data)
 }

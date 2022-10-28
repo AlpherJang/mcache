@@ -1,54 +1,80 @@
 package cache
 
 import (
-	"errors"
 	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"sync"
 	"time"
 )
 
-const (
-	DefaultAliveTime = 3 * time.Hour
-)
+const cleanPeriod = 10 * time.Minute
 
 var (
-	KeyNotFoundErr         = errors.New("key not exist")
-	KeyExistedErr          = errors.New("key already exist")
-	UpdateCheckRejectedErr = errors.New("update check rejected")
-	TableNotFoundErr       = errors.New("table not found")
-	cache                  = make(map[string]*Table)
-	mutex                  sync.RWMutex
+	cache = make(map[string]*Table)
+	mutex sync.RWMutex
 )
 
-type CheckFunc func(key interface{}) bool
-type UpdateCheckFunc func(value interface{}) bool
+func init() {
+	// 定时从cache map中清理已被删除的table
+	time.AfterFunc(cleanPeriod, cleanDeletedTable)
+}
 
-// GetTable search table from cache, and return TableNotFoundErr when table not exist
-func GetTable(table string) (*Table, errs.InnerError) {
-	if item, ok := cache[table]; !ok {
-		return nil, errs.TableNotFoundErr
-	} else {
-		return item, nil
+func RemoveTable(table string) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	_, ok := cache[table]
+	if ok {
+		delete(cache, table)
 	}
 }
 
-// Cache create table and save to cache, if table existed, get it and return
-func Cache(table string, liveTime time.Duration) *Table {
+func cleanDeletedTable() {
+	mutex.Lock()
+	for key, tb := range cache {
+		if tb.deleted {
+			delete(cache, key)
+		}
+	}
+	mutex.Unlock()
+	time.AfterFunc(cleanPeriod, cleanDeletedTable)
+}
+
+func TableExists(table string) bool {
 	mutex.RLock()
 	t, ok := cache[table]
 	mutex.RUnlock()
-	if !ok {
+	if ok && t.deleted {
+		RemoveTable(table)
+		return false
+	}
+	return ok
+}
+
+func WithOptionCache(table string, opts ...Option) *Table {
+	mutex.RLock()
+	t, ok := cache[table]
+	mutex.RUnlock()
+	if !ok || t.deleted {
 		mutex.Lock()
 		t, ok = cache[table]
-		if !ok {
-			t = &Table{
-				row:  make(map[interface{}]*Item),
-				name: table,
-			}
-			t.cleanupTimer = time.AfterFunc(liveTime, t.checkExpire)
+		if !ok || t.deleted {
+			t = NewByOption(table, opts...)
 			cache[table] = t
 		}
 		mutex.Unlock()
 	}
 	return t
+}
+
+// GetTable search table from cache, and return errs.TableNotFoundErr when table not exist
+func GetTable(table string) (*Table, errs.InnerError) {
+	mutex.RLock()
+	t, ok := cache[table]
+	mutex.RUnlock()
+	if ok {
+		if !t.deleted {
+			return t, nil
+		}
+		RemoveTable(table)
+	}
+	return nil, errs.TableNotFoundErr
 }
