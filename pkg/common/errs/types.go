@@ -4,8 +4,8 @@ import "errors"
 
 type InnerError interface {
 	Code() int
-	String() string
-	Error() error
+	Error() string
+	GetError() error
 }
 
 func NewInnerError(err string, code int) InnerError {
@@ -21,10 +21,10 @@ func (e innerError) Code() int {
 	return e.code
 }
 
-func (e innerError) Error() error {
+func (e innerError) GetError() error {
 	return e.err
 }
 
-func (e innerError) String() string {
+func (e innerError) Error() string {
 	return e.err.Error()
 }
