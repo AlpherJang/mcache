@@ -1,25 +1,26 @@
 package handler
 
 import (
+	"net/http"
+
 	"github.com/AlpherJang/mcache/pkg/cache"
 	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"github.com/AlpherJang/mcache/pkg/model"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type DataStruct struct {
 }
 
 func (d *DataStruct) list(ctx *gin.Context) {
-    tableName:=ctx.Param("table")
-    table,err:=cache.GetTable(tableName)
-    if err!=nil{
-        ctx.AbortWithError(err.Code(),err.Error())
-        return
-    }
-	cacheData:=table.List()
-	ctx.JSON(http.StatusOK,gin.H{"data":cacheData})
+	tableName := ctx.Param("table")
+	table, err := cache.GetTable(tableName)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	cacheData := table.List()
+	ctx.JSON(http.StatusOK, gin.H{"data": cacheData})
 
 }
 
@@ -39,13 +40,29 @@ func (d *DataStruct) get(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"data": cacheData})
 }
 
-func (d *DataStruct) add() {
+func (d *DataStruct) add(ctx *gin.Context) {
+	tableName := ctx.Param("table")
+	table, err := cache.GetTable(tableName)
+	if err != nil {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	var req model.AddCacheReq
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
+		return
+	}
+	if success, err := table.Add(req.Key, req.Value); !success {
+		ctx.AbortWithError(err.Code(), err.Error())
+		return
+	}
+	ctx.JSON(http.StatusOK, nil)
 
 }
 
 func (d *DataStruct) update(ctx *gin.Context) {
 	var req model.UpdateCacheReq
-	if err := ctx.ShouldBindJSON(req); err != nil {
+	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
 		return
 	}
@@ -58,16 +75,6 @@ func (d *DataStruct) update(ctx *gin.Context) {
 		ctx.AbortWithError(err.Code(), err.Error())
 		return
 	}
-	ctx.JSON(http.StatusOK, nil)
-}
-
-func (d *DataStruct) register(ctx *gin.Context) {
-	var req model.CreateTableReq
-	if err := ctx.ShouldBindJSON(req); err != nil {
-		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
-		return
-	}
-	_ = cache.Cache(req.Name, req.ExpireTime)
 	ctx.JSON(http.StatusOK, nil)
 }
 
@@ -84,4 +91,13 @@ func (d *DataStruct) delete(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, nil)
+}
+
+func (d *DataStruct) Registry(r *gin.Engine) {
+	data := r.Group("data")
+	data.GET("/:table", d.list)
+	data.GET("/:table/:key", d.get)
+	data.PUT("/:table", d.add)
+	data.POST("/:table", d.update)
+	data.DELETE("/:table/:key", d.delete)
 }
