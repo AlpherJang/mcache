@@ -6,4 +6,5 @@ var (
 	CacheDeleteErr   = NewInnerError("cache delete failed", 400)
 	CacheNotFoundErr = NewInnerError("key not exist", 404)
 	UpdateCacheErr   = NewInnerError("update check rejected", 500)
+	AddCacheErr      = NewInnerError("key already exist", 500)
 )

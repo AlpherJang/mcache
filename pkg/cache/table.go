@@ -1,9 +1,10 @@
 package cache
 
 import (
-	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"sync"
 	"time"
+
+	"github.com/AlpherJang/mcache/pkg/common/errs"
 )
 
 // ObjectEventHandlerFuncs 注册回调函数
@@ -37,11 +38,11 @@ func (t *Table) RegisterCallback(obj ObjectEventHandlerFuncs) {
 }
 
 // Add 添加CacheItem到table中
-func (t *Table) Add(key interface{}, value interface{}) (bool, error) {
+func (t *Table) Add(key interface{}, value interface{}) (bool, errs.InnerError) {
 	t.Lock()
 	defer t.Unlock()
 	if _, has := t.row[key]; has {
-		return false, KeyExistedErr
+		return false, errs.AddCacheErr
 	}
 	t.row[key] = NewCacheItem(key, value, DefaultAliveTime)
 	t.count++
@@ -140,12 +141,12 @@ func (t *Table) get(key interface{}) (*Item, bool) {
 }
 
 // GetAndDelete 取出key对应的value的同时，从缓存中删除
-func (t *Table) GetAndDelete(key interface{}) (interface{}, error) {
+func (t *Table) GetAndDelete(key interface{}) (interface{}, errs.InnerError) {
 	t.Lock()
 	defer t.Unlock()
 	value, has := t.row[key]
 	if !has {
-		return nil, KeyNotFoundErr
+		return nil, errs.CacheNotFoundErr
 	} else {
 		t.delete(key, value)
 		return value.Data(), nil

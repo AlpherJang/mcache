@@ -1,10 +1,10 @@
 package cache
 
 import (
-	"errors"
-	"github.com/AlpherJang/mcache/pkg/common/errs"
 	"sync"
 	"time"
+
+	"github.com/AlpherJang/mcache/pkg/common/errs"
 )
 
 const (
@@ -12,12 +12,8 @@ const (
 )
 
 var (
-	KeyNotFoundErr         = errors.New("key not exist")
-	KeyExistedErr          = errors.New("key already exist")
-	UpdateCheckRejectedErr = errors.New("update check rejected")
-	TableNotFoundErr       = errors.New("table not found")
-	cache                  = make(map[string]*Table)
-	mutex                  sync.RWMutex
+	cache = make(map[string]*Table)
+	mutex sync.RWMutex
 )
 
 type CheckFunc func(key interface{}) bool
@@ -30,6 +26,14 @@ func GetTable(table string) (*Table, errs.InnerError) {
 	} else {
 		return item, nil
 	}
+}
+
+func ListTable() ([]string, errs.InnerError) {
+	res := make([]string, 0, len(cache))
+	for _, item := range cache {
+		res = append(res, item.name)
+	}
+	return res, nil
 }
 
 // Cache create table and save to cache, if table existed, get it and return
