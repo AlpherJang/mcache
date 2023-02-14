@@ -1,1 +1,25 @@
+syntax = "proto3";
 
+package mcache;
+option go_package = "pkg/proto";
+
+message CacheTable {
+  string name = 1;
+  int64 expireTime = 2;
+}
+
+message CacheInfo {
+  string key = 1;
+  string value = 2;
+}
+
+message RegisterTableReq {
+  CacheTable data = 1;
+}
+
+message RegisterTableResp {
+  string name = 1;
+}
+service CacheRpcService {
+  rpc RegisterTable( RegisterTableReq ) returns (RegisterTableResp);
+}
