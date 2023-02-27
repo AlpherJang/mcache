@@ -2,6 +2,10 @@ package main
 
 import (
 	"context"
+	"github.com/AlpherJang/mcache/pkg/proto"
+	"github.com/AlpherJang/mcache/pkg/rpc"
+	"google.golang.org/grpc"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -16,9 +20,6 @@ import (
 // main function provide an endpoint for cache service
 func main() {
 	gin.ForceConsoleColor()
-	// @todo init base config
-	// @todo init server config
-	// @todo shutdown server with notify
 	router := gin.Default()
 	handler.Register(router)
 	srv := &http.Server{
@@ -31,7 +32,17 @@ func main() {
 			log.Fatalf("listen: %s\n", err)
 		}
 	}()
-	// 等待中断信号以优雅地关闭服务器（设置 5 秒的超时时间）
+	go func() {
+		lis, err := net.Listen("tcp", ":8081")
+		if err != nil {
+			log.Fatalf("failed to listen: %v", err)
+		}
+		var opts []grpc.ServerOption
+		grpcServer := grpc.NewServer(opts...)
+		proto.RegisterCacheRpcServiceServer(grpcServer, rpc.NewServer())
+		grpcServer.Serve(lis)
+	}()
+	// close server with signal, set timeout context about 5 seconds
 	quit := make(chan os.Signal)
 	signal.Notify(quit, os.Interrupt)
 	<-quit
