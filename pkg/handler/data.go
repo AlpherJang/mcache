@@ -57,7 +57,6 @@ func (d *DataStruct) add(ctx *gin.Context) {
 		return
 	}
 	ctx.JSON(http.StatusOK, nil)
-
 }
 
 func (d *DataStruct) update(ctx *gin.Context) {

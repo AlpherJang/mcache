@@ -2,10 +2,12 @@ syntax = "proto3";
 
 package mcache;
 option go_package = "pkg/proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/empty.proto";
 
 message CacheTable {
   string name = 1;
-  int64 expireTime = 2;
+  google.protobuf.Duration expireTime = 2;
 }
 
 message CacheInfo {
@@ -20,6 +22,13 @@ message RegisterTableReq {
 message RegisterTableResp {
   string name = 1;
 }
+
+message AddCacheReq {
+  string tableName = 1;
+  CacheInfo data = 2;
+}
+
 service CacheRpcService {
   rpc RegisterTable( RegisterTableReq ) returns (RegisterTableResp);
+  rpc AddCache( AddCacheReq ) returns (google.protobuf.Empty);
 }
