@@ -10,6 +10,21 @@ import (
 type CacheRpc struct {
 }
 
+func (c *CacheRpc) GetCache(ctx context.Context, req *proto.GetCacheReq) (*proto.GetCacheResp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *CacheRpc) ListCache(ctx context.Context, req *proto.ListCacheReq) (*proto.ListCacheResp, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (c *CacheRpc) DeleteCache(ctx context.Context, req *proto.DeleteCacheReq) (*emptypb.Empty, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 func (c *CacheRpc) AddCache(ctx context.Context, req *proto.AddCacheReq) (*emptypb.Empty, error) {
 	table, err := cache.GetTable(req.GetTableName())
 	if err != nil {

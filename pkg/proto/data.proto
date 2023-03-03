@@ -28,7 +28,32 @@ message AddCacheReq {
   CacheInfo data = 2;
 }
 
+message GetCacheReq {
+  string tableName = 1;
+  string cacheName = 2;
+}
+
+message GetCacheResp {
+  CacheInfo data = 1;
+}
+
+message ListCacheReq {
+  string tableName = 1;
+}
+
+message ListCacheResp {
+  repeated  CacheInfo list = 1;
+}
+
+message DeleteCacheReq {
+  string tableName = 1;
+  string cacheName = 2;
+}
+
 service CacheRpcService {
-  rpc RegisterTable( RegisterTableReq ) returns (RegisterTableResp);
-  rpc AddCache( AddCacheReq ) returns (google.protobuf.Empty);
+  rpc RegisterTable(RegisterTableReq) returns (RegisterTableResp);
+  rpc AddCache(AddCacheReq) returns (google.protobuf.Empty);
+  rpc GetCache(GetCacheReq) returns (GetCacheResp);
+  rpc ListCache(ListCacheReq) returns (ListCacheResp);
+  rpc DeleteCache(DeleteCacheReq) returns (google.protobuf.Empty);
 }
