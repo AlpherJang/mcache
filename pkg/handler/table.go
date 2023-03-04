@@ -17,7 +17,7 @@ func (t *TableStruct) register(ctx *gin.Context) {
 	var req model.CreateTableReq
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		log.Errorf("err info is %s", err.Error())
-		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.Error())
+		ctx.AbortWithError(errs.ParamErr.Code(), errs.ParamErr.ToError())
 		return
 	}
 	_ = cache.Cache(req.Name, req.ExpireTime)

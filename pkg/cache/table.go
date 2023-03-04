@@ -1,6 +1,7 @@
 package cache
 
 import (
+	"github.com/AlpherJang/mcache/pkg/proto"
 	"sync"
 	"time"
 
@@ -160,6 +161,20 @@ func (t *Table) List() []interface{} {
 	list := make([]interface{}, 0)
 	for _, item := range t.row {
 		list = append(list, item.Data())
+	}
+	return list
+}
+
+// ListCacheInfo 获取缓存中所有的数据
+func (t *Table) ListCacheInfo() []*proto.CacheInfo {
+	t.RLock()
+	defer t.RUnlock()
+	list := make([]*proto.CacheInfo, 0)
+	for _, item := range t.row {
+		list = append(list, &proto.CacheInfo{
+			Key:   item.Key().(string),
+			Value: item.Data().(string),
+		})
 	}
 	return list
 }

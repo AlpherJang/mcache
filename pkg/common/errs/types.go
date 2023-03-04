@@ -1,11 +1,14 @@
 package errs
 
-import "errors"
+import (
+	"errors"
+)
 
 type InnerError interface {
 	Code() int
 	String() string
-	Error() error
+	ToError() error
+	Error() string
 }
 
 func NewInnerError(err string, code int) InnerError {
@@ -17,11 +20,15 @@ type innerError struct {
 	code int
 }
 
+func (e innerError) Error() string {
+	return e.String()
+}
+
 func (e innerError) Code() int {
 	return e.code
 }
 
-func (e innerError) Error() error {
+func (e innerError) ToError() error {
 	return e.err
 }
 
