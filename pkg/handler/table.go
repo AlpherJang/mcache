@@ -13,6 +13,10 @@ import (
 type TableStruct struct {
 }
 
+func NewTableStruct() *TableStruct {
+	return &TableStruct{}
+}
+
 func (t *TableStruct) register(ctx *gin.Context) {
 	var req model.CreateTableReq
 	if err := ctx.ShouldBindJSON(&req); err != nil {

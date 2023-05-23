@@ -1,8 +1,13 @@
 package rpc
 
-import "context"
+import (
+	"context"
+	"github.com/AlpherJang/mcache/pkg/cache"
+	"github.com/AlpherJang/mcache/pkg/proto"
+)
 
-// AddTable add a table
-func (c *CacheRpc) AddTable(ctx context.Context) {
-
+// RegisterTable create a table named with user custom define
+func (c *CacheRpc) RegisterTable(ctx context.Context, req *proto.RegisterTableReq) (*proto.RegisterTableResp, error) {
+	_ = cache.Cache(req.GetData().GetName(), req.GetData().GetExpireTime().AsDuration())
+	return &proto.RegisterTableResp{Name: req.GetData().GetName()}, nil
 }

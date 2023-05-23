@@ -12,6 +12,10 @@ import (
 type DataStruct struct {
 }
 
+func NewDataStruct() *DataStruct {
+	return &DataStruct{}
+}
+
 func (d *DataStruct) list(ctx *gin.Context) {
 	tableName := ctx.Param("table")
 	table, err := cache.GetTable(tableName)

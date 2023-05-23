@@ -5,8 +5,6 @@ import (
 )
 
 func Register(r *gin.Engine) {
-	dataHandler := &DataStruct{}
-	dataHandler.Registry(r)
-	tableHandler := &TableStruct{}
-	tableHandler.Registry(r)
+	NewDataStruct().Registry(r)
+	NewTableStruct().Registry(r)
 }
