@@ -13,6 +13,6 @@ func (c *CacheRpc) RegisterTable(ctx context.Context, req *proto.RegisterTableRe
 }
 
 func (c *CacheRpc) ListTable(_ context.Context, req *proto.ListTableReq) (*proto.ListTableResp, error) {
-	tables, _ := cache.ListTable()
+	tables, _ := cache.ListTable(cache.NewTableNameFilter(req.GetTableName()))
 	return &proto.ListTableResp{TableList: tables}, nil
 }

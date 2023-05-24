@@ -28,7 +28,7 @@ func GetTable(table string) (*Table, errs.InnerError) {
 	}
 }
 
-func ListTable() ([]string, errs.InnerError) {
+func ListTable(filters ...TableFilter) ([]string, errs.InnerError) {
 	res := make([]string, 0, len(cache))
 	for _, item := range cache {
 		res = append(res, item.name)
