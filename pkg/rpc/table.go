@@ -11,3 +11,7 @@ func (c *CacheRpc) RegisterTable(ctx context.Context, req *proto.RegisterTableRe
 	_ = cache.Cache(req.GetData().GetName(), req.GetData().GetExpireTime().AsDuration())
 	return &proto.RegisterTableResp{Name: req.GetData().GetName()}, nil
 }
+
+func (c *CacheRpc) ListTable(_ context.Context, req *proto.ListTableReq) (*proto.ListTableResp, error) {
+	return nil, nil
+}
