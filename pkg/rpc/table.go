@@ -16,3 +16,8 @@ func (c *CacheRpc) ListTable(_ context.Context, req *proto.ListTableReq) (*proto
 	tables, _ := cache.ListTable(cache.NewTableNameFilter(req.GetTableName()))
 	return &proto.ListTableResp{TableList: tables}, nil
 }
+
+func (c *CacheRpc) DropTable(_ context.Context, req *proto.DropTableReq) error {
+	cache.DropTable(req.GetName())
+	return nil
+}
