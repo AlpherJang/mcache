@@ -536,6 +536,147 @@ func (x *DeleteCacheReq) GetCacheName() string {
 	return ""
 }
 
+type ListTableReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TableName string `protobuf:"bytes,1,opt,name=tableName,proto3" json:"tableName,omitempty"`
+}
+
+func (x *ListTableReq) Reset() {
+	*x = ListTableReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_data_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListTableReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTableReq) ProtoMessage() {}
+
+func (x *ListTableReq) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_data_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTableReq.ProtoReflect.Descriptor instead.
+func (*ListTableReq) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_data_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListTableReq) GetTableName() string {
+	if x != nil {
+		return x.TableName
+	}
+	return ""
+}
+
+type ListTableResp struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	TableList []string `protobuf:"bytes,1,rep,name=tableList,proto3" json:"tableList,omitempty"`
+}
+
+func (x *ListTableResp) Reset() {
+	*x = ListTableResp{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_data_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ListTableResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTableResp) ProtoMessage() {}
+
+func (x *ListTableResp) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_data_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTableResp.ProtoReflect.Descriptor instead.
+func (*ListTableResp) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_data_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *ListTableResp) GetTableList() []string {
+	if x != nil {
+		return x.TableList
+	}
+	return nil
+}
+
+type DropTableReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+}
+
+func (x *DropTableReq) Reset() {
+	*x = DropTableReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_pkg_proto_data_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *DropTableReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DropTableReq) ProtoMessage() {}
+
+func (x *DropTableReq) ProtoReflect() protoreflect.Message {
+	mi := &file_pkg_proto_data_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DropTableReq.ProtoReflect.Descriptor instead.
+func (*DropTableReq) Descriptor() ([]byte, []int) {
+	return file_pkg_proto_data_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *DropTableReq) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 var File_pkg_proto_data_proto protoreflect.FileDescriptor
 
 var file_pkg_proto_data_proto_rawDesc = []byte{
@@ -584,29 +725,44 @@ var file_pkg_proto_data_proto_rawDesc = []byte{
 	0x12, 0x1c, 0x0a, 0x09, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20,
 	0x01, 0x28, 0x09, 0x52, 0x09, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1c,
 	0x0a, 0x09, 0x63, 0x61, 0x63, 0x68, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x09, 0x63, 0x61, 0x63, 0x68, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x32, 0xc0, 0x02, 0x0a,
-	0x0f, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x70, 0x63, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65,
-	0x12, 0x44, 0x0a, 0x0d, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x54, 0x61, 0x62, 0x6c,
-	0x65, 0x12, 0x18, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73,
-	0x74, 0x65, 0x72, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x6d, 0x63,
-	0x61, 0x63, 0x68, 0x65, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x54, 0x61, 0x62,
-	0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x37, 0x0a, 0x08, 0x41, 0x64, 0x64, 0x43, 0x61, 0x63,
-	0x68, 0x65, 0x12, 0x13, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x41, 0x64, 0x64, 0x43,
-	0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12,
-	0x35, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x12, 0x13, 0x2e, 0x6d, 0x63,
-	0x61, 0x63, 0x68, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71,
-	0x1a, 0x14, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x43, 0x61, 0x63,
-	0x68, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x38, 0x0a, 0x09, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61,
-	0x63, 0x68, 0x65, 0x12, 0x14, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x4c, 0x69, 0x73,
-	0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x6d, 0x63, 0x61, 0x63,
-	0x68, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x73, 0x70,
-	0x12, 0x3d, 0x0a, 0x0b, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x61, 0x63, 0x68, 0x65, 0x12,
-	0x16, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x43,
-	0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65,
-	0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x42,
-	0x0b, 0x5a, 0x09, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x09, 0x52, 0x09, 0x63, 0x61, 0x63, 0x68, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x2c, 0x0a, 0x0c,
+	0x4c, 0x69, 0x73, 0x74, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x12, 0x1c, 0x0a, 0x09,
+	0x74, 0x61, 0x62, 0x6c, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x09, 0x74, 0x61, 0x62, 0x6c, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x22, 0x2d, 0x0a, 0x0d, 0x4c, 0x69,
+	0x73, 0x74, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x1c, 0x0a, 0x09, 0x74,
+	0x61, 0x62, 0x6c, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x01, 0x20, 0x03, 0x28, 0x09, 0x52, 0x09,
+	0x74, 0x61, 0x62, 0x6c, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x22, 0x22, 0x0a, 0x0c, 0x44, 0x72, 0x6f,
+	0x70, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x32, 0xb5, 0x03,
+	0x0a, 0x0f, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x70, 0x63, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63,
+	0x65, 0x12, 0x44, 0x0a, 0x0d, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x54, 0x61, 0x62,
+	0x6c, 0x65, 0x12, 0x18, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x52, 0x65, 0x67, 0x69,
+	0x73, 0x74, 0x65, 0x72, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x19, 0x2e, 0x6d,
+	0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x65, 0x72, 0x54, 0x61,
+	0x62, 0x6c, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x38, 0x0a, 0x09, 0x4c, 0x69, 0x73, 0x74, 0x54,
+	0x61, 0x62, 0x6c, 0x65, 0x12, 0x14, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x4c, 0x69,
+	0x73, 0x74, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x15, 0x2e, 0x6d, 0x63, 0x61,
+	0x63, 0x68, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x52, 0x65, 0x73,
+	0x70, 0x12, 0x39, 0x0a, 0x09, 0x44, 0x72, 0x6f, 0x70, 0x54, 0x61, 0x62, 0x6c, 0x65, 0x12, 0x14,
+	0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x44, 0x72, 0x6f, 0x70, 0x54, 0x61, 0x62, 0x6c,
+	0x65, 0x52, 0x65, 0x71, 0x1a, 0x16, 0x2e, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72,
+	0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x37, 0x0a, 0x08,
+	0x41, 0x64, 0x64, 0x43, 0x61, 0x63, 0x68, 0x65, 0x12, 0x13, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68,
+	0x65, 0x2e, 0x41, 0x64, 0x64, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x16, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x12, 0x35, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x43, 0x61, 0x63, 0x68,
+	0x65, 0x12, 0x13, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x47, 0x65, 0x74, 0x43, 0x61,
+	0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x14, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e,
+	0x47, 0x65, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x38, 0x0a, 0x09,
+	0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x12, 0x14, 0x2e, 0x6d, 0x63, 0x61, 0x63,
+	0x68, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a,
+	0x15, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x43, 0x61, 0x63,
+	0x68, 0x65, 0x52, 0x65, 0x73, 0x70, 0x12, 0x3d, 0x0a, 0x0b, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65,
+	0x43, 0x61, 0x63, 0x68, 0x65, 0x12, 0x16, 0x2e, 0x6d, 0x63, 0x61, 0x63, 0x68, 0x65, 0x2e, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x43, 0x61, 0x63, 0x68, 0x65, 0x52, 0x65, 0x71, 0x1a, 0x16, 0x2e,
+	0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x75, 0x66, 0x2e,
+	0x45, 0x6d, 0x70, 0x74, 0x79, 0x42, 0x0b, 0x5a, 0x09, 0x70, 0x6b, 0x67, 0x2f, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -621,7 +777,7 @@ func file_pkg_proto_data_proto_rawDescGZIP() []byte {
 	return file_pkg_proto_data_proto_rawDescData
 }
 
-var file_pkg_proto_data_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_pkg_proto_data_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_pkg_proto_data_proto_goTypes = []interface{}{
 	(*CacheTable)(nil),          // 0: mcache.CacheTable
 	(*CacheInfo)(nil),           // 1: mcache.CacheInfo
@@ -633,27 +789,34 @@ var file_pkg_proto_data_proto_goTypes = []interface{}{
 	(*ListCacheReq)(nil),        // 7: mcache.ListCacheReq
 	(*ListCacheResp)(nil),       // 8: mcache.ListCacheResp
 	(*DeleteCacheReq)(nil),      // 9: mcache.DeleteCacheReq
-	(*durationpb.Duration)(nil), // 10: google.protobuf.Duration
-	(*emptypb.Empty)(nil),       // 11: google.protobuf.Empty
+	(*ListTableReq)(nil),        // 10: mcache.ListTableReq
+	(*ListTableResp)(nil),       // 11: mcache.ListTableResp
+	(*DropTableReq)(nil),        // 12: mcache.DropTableReq
+	(*durationpb.Duration)(nil), // 13: google.protobuf.Duration
+	(*emptypb.Empty)(nil),       // 14: google.protobuf.Empty
 }
 var file_pkg_proto_data_proto_depIdxs = []int32{
-	10, // 0: mcache.CacheTable.expireTime:type_name -> google.protobuf.Duration
+	13, // 0: mcache.CacheTable.expireTime:type_name -> google.protobuf.Duration
 	0,  // 1: mcache.RegisterTableReq.data:type_name -> mcache.CacheTable
 	1,  // 2: mcache.AddCacheReq.data:type_name -> mcache.CacheInfo
 	1,  // 3: mcache.GetCacheResp.data:type_name -> mcache.CacheInfo
 	1,  // 4: mcache.ListCacheResp.list:type_name -> mcache.CacheInfo
 	2,  // 5: mcache.CacheRpcService.RegisterTable:input_type -> mcache.RegisterTableReq
-	4,  // 6: mcache.CacheRpcService.AddCache:input_type -> mcache.AddCacheReq
-	5,  // 7: mcache.CacheRpcService.GetCache:input_type -> mcache.GetCacheReq
-	7,  // 8: mcache.CacheRpcService.ListCache:input_type -> mcache.ListCacheReq
-	9,  // 9: mcache.CacheRpcService.DeleteCache:input_type -> mcache.DeleteCacheReq
-	3,  // 10: mcache.CacheRpcService.RegisterTable:output_type -> mcache.RegisterTableResp
-	11, // 11: mcache.CacheRpcService.AddCache:output_type -> google.protobuf.Empty
-	6,  // 12: mcache.CacheRpcService.GetCache:output_type -> mcache.GetCacheResp
-	8,  // 13: mcache.CacheRpcService.ListCache:output_type -> mcache.ListCacheResp
-	11, // 14: mcache.CacheRpcService.DeleteCache:output_type -> google.protobuf.Empty
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
+	10, // 6: mcache.CacheRpcService.ListTable:input_type -> mcache.ListTableReq
+	12, // 7: mcache.CacheRpcService.DropTable:input_type -> mcache.DropTableReq
+	4,  // 8: mcache.CacheRpcService.AddCache:input_type -> mcache.AddCacheReq
+	5,  // 9: mcache.CacheRpcService.GetCache:input_type -> mcache.GetCacheReq
+	7,  // 10: mcache.CacheRpcService.ListCache:input_type -> mcache.ListCacheReq
+	9,  // 11: mcache.CacheRpcService.DeleteCache:input_type -> mcache.DeleteCacheReq
+	3,  // 12: mcache.CacheRpcService.RegisterTable:output_type -> mcache.RegisterTableResp
+	11, // 13: mcache.CacheRpcService.ListTable:output_type -> mcache.ListTableResp
+	14, // 14: mcache.CacheRpcService.DropTable:output_type -> google.protobuf.Empty
+	14, // 15: mcache.CacheRpcService.AddCache:output_type -> google.protobuf.Empty
+	6,  // 16: mcache.CacheRpcService.GetCache:output_type -> mcache.GetCacheResp
+	8,  // 17: mcache.CacheRpcService.ListCache:output_type -> mcache.ListCacheResp
+	14, // 18: mcache.CacheRpcService.DeleteCache:output_type -> google.protobuf.Empty
+	12, // [12:19] is the sub-list for method output_type
+	5,  // [5:12] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
 	5,  // [5:5] is the sub-list for extension extendee
 	0,  // [0:5] is the sub-list for field type_name
@@ -785,6 +948,42 @@ func file_pkg_proto_data_proto_init() {
 				return nil
 			}
 		}
+		file_pkg_proto_data_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListTableReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_data_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ListTableResp); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_pkg_proto_data_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*DropTableReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -792,7 +991,7 @@ func file_pkg_proto_data_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pkg_proto_data_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -819,6 +1018,8 @@ const _ = grpc.SupportPackageIsVersion6
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type CacheRpcServiceClient interface {
 	RegisterTable(ctx context.Context, in *RegisterTableReq, opts ...grpc.CallOption) (*RegisterTableResp, error)
+	ListTable(ctx context.Context, in *ListTableReq, opts ...grpc.CallOption) (*ListTableResp, error)
+	DropTable(ctx context.Context, in *DropTableReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	AddCache(ctx context.Context, in *AddCacheReq, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetCache(ctx context.Context, in *GetCacheReq, opts ...grpc.CallOption) (*GetCacheResp, error)
 	ListCache(ctx context.Context, in *ListCacheReq, opts ...grpc.CallOption) (*ListCacheResp, error)
@@ -836,6 +1037,24 @@ func NewCacheRpcServiceClient(cc grpc.ClientConnInterface) CacheRpcServiceClient
 func (c *cacheRpcServiceClient) RegisterTable(ctx context.Context, in *RegisterTableReq, opts ...grpc.CallOption) (*RegisterTableResp, error) {
 	out := new(RegisterTableResp)
 	err := c.cc.Invoke(ctx, "/mcache.CacheRpcService/RegisterTable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cacheRpcServiceClient) ListTable(ctx context.Context, in *ListTableReq, opts ...grpc.CallOption) (*ListTableResp, error) {
+	out := new(ListTableResp)
+	err := c.cc.Invoke(ctx, "/mcache.CacheRpcService/ListTable", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *cacheRpcServiceClient) DropTable(ctx context.Context, in *DropTableReq, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/mcache.CacheRpcService/DropTable", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -881,6 +1100,8 @@ func (c *cacheRpcServiceClient) DeleteCache(ctx context.Context, in *DeleteCache
 // CacheRpcServiceServer is the server API for CacheRpcService service.
 type CacheRpcServiceServer interface {
 	RegisterTable(context.Context, *RegisterTableReq) (*RegisterTableResp, error)
+	ListTable(context.Context, *ListTableReq) (*ListTableResp, error)
+	DropTable(context.Context, *DropTableReq) (*emptypb.Empty, error)
 	AddCache(context.Context, *AddCacheReq) (*emptypb.Empty, error)
 	GetCache(context.Context, *GetCacheReq) (*GetCacheResp, error)
 	ListCache(context.Context, *ListCacheReq) (*ListCacheResp, error)
@@ -893,6 +1114,12 @@ type UnimplementedCacheRpcServiceServer struct {
 
 func (*UnimplementedCacheRpcServiceServer) RegisterTable(context.Context, *RegisterTableReq) (*RegisterTableResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegisterTable not implemented")
+}
+func (*UnimplementedCacheRpcServiceServer) ListTable(context.Context, *ListTableReq) (*ListTableResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListTable not implemented")
+}
+func (*UnimplementedCacheRpcServiceServer) DropTable(context.Context, *DropTableReq) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DropTable not implemented")
 }
 func (*UnimplementedCacheRpcServiceServer) AddCache(context.Context, *AddCacheReq) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AddCache not implemented")
@@ -925,6 +1152,42 @@ func _CacheRpcService_RegisterTable_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CacheRpcServiceServer).RegisterTable(ctx, req.(*RegisterTableReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CacheRpcService_ListTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTableReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheRpcServiceServer).ListTable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mcache.CacheRpcService/ListTable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheRpcServiceServer).ListTable(ctx, req.(*ListTableReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CacheRpcService_DropTable_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DropTableReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CacheRpcServiceServer).DropTable(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/mcache.CacheRpcService/DropTable",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CacheRpcServiceServer).DropTable(ctx, req.(*DropTableReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1008,6 +1271,14 @@ var _CacheRpcService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "RegisterTable",
 			Handler:    _CacheRpcService_RegisterTable_Handler,
+		},
+		{
+			MethodName: "ListTable",
+			Handler:    _CacheRpcService_ListTable_Handler,
+		},
+		{
+			MethodName: "DropTable",
+			Handler:    _CacheRpcService_DropTable_Handler,
 		},
 		{
 			MethodName: "AddCache",

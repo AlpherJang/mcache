@@ -50,8 +50,22 @@ message DeleteCacheReq {
   string cacheName = 2;
 }
 
+message ListTableReq {
+  string tableName = 1;
+}
+
+message ListTableResp {
+  repeated string tableList = 1;
+}
+
+message DropTableReq {
+  string name = 1;
+}
+
 service CacheRpcService {
   rpc RegisterTable(RegisterTableReq) returns (RegisterTableResp);
+  rpc ListTable(ListTableReq) returns (ListTableResp);
+  rpc DropTable(DropTableReq) returns (google.protobuf.Empty);
   rpc AddCache(AddCacheReq) returns (google.protobuf.Empty);
   rpc GetCache(GetCacheReq) returns (GetCacheResp);
   rpc ListCache(ListCacheReq) returns (ListCacheResp);

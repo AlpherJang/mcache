@@ -28,12 +28,23 @@ func GetTable(table string) (*Table, errs.InnerError) {
 	}
 }
 
-func ListTable() ([]string, errs.InnerError) {
+func ListTable(filters ...TableFilter) ([]string, errs.InnerError) {
+	mutex.RLock()
+	defer mutex.RUnlock()
 	res := make([]string, 0, len(cache))
 	for _, item := range cache {
 		res = append(res, item.name)
 	}
 	return res, nil
+}
+
+func DropTable(name string) {
+	mutex.Lock()
+	defer mutex.Unlock()
+	if _, ok := cache[name]; ok {
+		delete(cache, name)
+	}
+	return
 }
 
 // Cache create table and save to cache, if table existed, get it and return
