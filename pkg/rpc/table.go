@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/AlpherJang/mcache/pkg/cache"
 	"github.com/AlpherJang/mcache/pkg/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 // RegisterTable create a table named with user custom define
@@ -17,7 +18,7 @@ func (c *CacheRpc) ListTable(_ context.Context, req *proto.ListTableReq) (*proto
 	return &proto.ListTableResp{TableList: tables}, nil
 }
 
-func (c *CacheRpc) DropTable(_ context.Context, req *proto.DropTableReq) error {
+func (c *CacheRpc) DropTable(_ context.Context, req *proto.DropTableReq) (*emptypb.Empty, error) {
 	cache.DropTable(req.GetName())
-	return nil
+	return nil, nil
 }
