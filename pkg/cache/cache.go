@@ -21,7 +21,9 @@ type UpdateCheckFunc func(value interface{}) bool
 
 // GetTable search table from cache, and return TableNotFoundErr when table not exist
 func GetTable(table string) (*Table, errs.InnerError) {
-	if item, ok := cache[table]; !ok {
+	mutex.RLock()
+	defer mutex.RUnlock()
+	if item, ok := cache[table]; !ok || item.deleted {
 		return nil, errs.TableNotFoundErr
 	} else {
 		return item, nil
@@ -33,7 +35,9 @@ func ListTable(filters ...TableFilter) ([]string, errs.InnerError) {
 	defer mutex.RUnlock()
 	res := make([]string, 0, len(cache))
 	for _, item := range cache {
-		res = append(res, item.name)
+		if !item.deleted {
+			res = append(res, item.name)
+		}
 	}
 	return res, nil
 }
@@ -42,7 +46,7 @@ func DropTable(name string) {
 	mutex.Lock()
 	defer mutex.Unlock()
 	if _, ok := cache[name]; ok {
-		delete(cache, name)
+		cache[name].deleted = true
 	}
 	return
 }
