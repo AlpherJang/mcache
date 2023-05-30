@@ -26,6 +26,7 @@ type Table struct {
 	// length
 	count       int
 	callbackObj ObjectEventHandlerFuncs
+	deleted     bool
 }
 
 // Count 返回table中的CacheItem数量
