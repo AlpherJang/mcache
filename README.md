@@ -21,3 +21,5 @@ update one data cache in table
 
 #### /register
 register a cache in table
+
+/test
